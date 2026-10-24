@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 const steps = [
   {
@@ -36,7 +36,9 @@ export default function Home() {
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#about">About</a>
           <a href="#how-it-works">How it works</a>
-          <a href="#get-started">Get started</a>
+          <Link href="/create">Create</Link>
+          <Link href="/manage">Manage</Link>
+          <Link href="/docs">Docs</Link>
           <a
             href="https://github.com/HouseMachine/MOTB-8"
             target="_blank"
@@ -64,9 +66,9 @@ export default function Home() {
             </p>
 
             <div className="hero-actions">
-              <a href="#get-started" className="button button-primary">
+              <Link href="/create" className="button button-primary">
                 Create MOTB-8 <span aria-hidden="true">↗</span>
-              </a>
+              </Link>
               <a href="#how-it-works" className="button button-secondary">
                 How it works
               </a>
