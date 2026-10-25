@@ -1,4 +1,4 @@
-﻿# Phase 23A — MOTB-8 Website Design & Build
+# Phase 23A — MOTB-8 Website Design & Build
 
 Status: IN PROGRESS
 Repository: HouseMachine/MOTB-8-Web
@@ -25,7 +25,7 @@ Core software: HouseMachine/MOTB-8 v0.1.0
 |---|---|---|
 | 23A.1 | Infrastructure and Hosting | COMPLETE |
 | 23A.2 | Website Foundation and Navigation | BUILT - PUSH PENDING |
-| 23A.3 | Create and Beacon Editor | IN PROGRESS |
+| 23A.3 | Create and Beacon Editor | TESTED - RELEASE PENDING |
 | 23A.4 | Browser Cryptographic Integration | NOT STARTED |
 | 23A.5 | Complete Create Experience | NOT STARTED |
 | 23A.6 | Manage and Beacon Updates | NOT STARTED |
@@ -122,16 +122,36 @@ Status: NOT STARTED.
 
 ## Current Development Position
 
-Step 36J — Attachment JSON editing and validation.
+Phase 23A.3 - Create and Beacon Editor
+Status: TESTED - RELEASE PENDING
+Date: 2026-10-25
 
-AttachmentJsonEditor.tsx has been created and integrated into
-OptionalBeaconFields.tsx.
+Completed implementation:
+- Required and conditional registration fields.
+- All eight optional Beacon information categories.
+- Repeatable field editing and attachment JSON validation.
+- Good-Faith Participation v1.0 acknowledgment.
+- Discoverability Bar with flexible 100-point participation scoring.
+- Canonical Industry Taxonomy v0.1 selector with custom classifications.
+- Beacon registration normalization.
+- Registration-field validation derived from Beacon v1.1 schema.
 
-Next:
-1. Verify build and browser behavior.
-2. Propagate invalid JSON state to the parent form.
-3. Complete optional-field validation.
-4. Implement Good-Faith acknowledgment.
-5. Implement Discoverability Bar.
+Verification:
+- 32 automated tests passed.
+- TypeScript validation passed.
+- Next.js 16.4.3 production build passed.
+- Seven browser acceptance checks passed.
+- Core taxonomy and Beacon schema copies verified by SHA-256.
 
-Update this document whenever a subphase reaches its completion gate.
+Remaining release gates:
+1. Commit and push Phase 23A.3 to main.
+2. Verify GitHub synchronization.
+3. Verify Vercel production deployment.
+4. Mark Phase 23A.3 COMPLETE.
+
+Deferred:
+- Automatic registration draft persistence: Phase 23A.8.
+- Complete signed Beacon generation: Phases 23A.4-23A.5.
+
+Next subphase:
+23A.4 - Browser Cryptographic Integration.

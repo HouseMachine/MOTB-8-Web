@@ -2,6 +2,7 @@
 
 import type { BeaconFormData } from "./types";
 import AttachmentJsonEditor from "./AttachmentJsonEditor";
+import IndustryTaxonomySelector from "./IndustryTaxonomySelector";
 import { createAttachmentDraftId, type AttachmentDraftState } from "./attachment-draft";
 
 type OptionalData = Pick<
@@ -59,41 +60,13 @@ export default function OptionalBeaconFields({
         <div className="mt-5 space-y-4">
           {value.taxonomy.map((entry, index) => (
             <div key={index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
-              <input
-                aria-label="Industry domain"
-                placeholder="Domain"
-                maxLength={120}
-                value={entry.domain}
-                onChange={(event) => {
+              <IndustryTaxonomySelector
+                value={entry}
+                onChange={(nextEntry) => {
                   const next = [...value.taxonomy];
-                  next[index] = { ...entry, domain: event.target.value };
+                  next[index] = nextEntry;
                   update("taxonomy", next);
                 }}
-                className="rounded-lg border border-[#dce4dc] p-3"
-              />
-              <input
-                aria-label="Industry category"
-                placeholder="Category"
-                maxLength={120}
-                value={entry.category}
-                onChange={(event) => {
-                  const next = [...value.taxonomy];
-                  next[index] = { ...entry, category: event.target.value };
-                  update("taxonomy", next);
-                }}
-                className="rounded-lg border border-[#dce4dc] p-3"
-              />
-              <input
-                aria-label="Industry subcategory"
-                placeholder="Subcategory (optional)"
-                maxLength={120}
-                value={entry.subcategory ?? ""}
-                onChange={(event) => {
-                  const next = [...value.taxonomy];
-                  next[index] = { ...entry, subcategory: event.target.value };
-                  update("taxonomy", next);
-                }}
-                className="rounded-lg border border-[#dce4dc] p-3"
               />
               <button
                 type="button"
@@ -518,6 +491,15 @@ export default function OptionalBeaconFields({
               />
               <AttachmentJsonEditor
                 value={entry.data}
+                draftText={attachmentDrafts[index]?.text}
+                onDraftTextChange={(text) => {
+                  const next = [...attachmentDrafts];
+
+                  if (next[index]) {
+                    next[index] = { ...next[index], text };
+                    onAttachmentDraftsChange(next);
+                  }
+                }}
                 onChange={(data) => {
                   const next = [...value.attachments];
                   next[index] = { ...entry, data };

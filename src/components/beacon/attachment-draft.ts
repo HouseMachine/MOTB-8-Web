@@ -1,6 +1,7 @@
-﻿export interface AttachmentDraftState {
+export interface AttachmentDraftState {
   id: string;
   valid: boolean;
+  text?: string;
 }
 
 export function createAttachmentDraftId(): string {

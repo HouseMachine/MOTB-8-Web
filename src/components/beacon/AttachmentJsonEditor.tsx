@@ -6,20 +6,25 @@ interface AttachmentJsonEditorProps {
   value: Record<string, unknown>;
   onChange: (value: Record<string, unknown>) => void;
   onValidityChange: (valid: boolean) => void;
+  draftText?: string;
+  onDraftTextChange: (text: string) => void;
 }
 
 export default function AttachmentJsonEditor({
   value,
   onChange,
   onValidityChange,
+  draftText,
+  onDraftTextChange,
 }: AttachmentJsonEditorProps) {
   const [text, setText] = useState(() =>
-    JSON.stringify(value, null, 2)
+    draftText ?? JSON.stringify(value, null, 2)
   );
   const [error, setError] = useState("");
 
   function handleChange(nextText: string) {
     setText(nextText);
+    onDraftTextChange(nextText);
 
     try {
       const parsed: unknown = JSON.parse(nextText);
