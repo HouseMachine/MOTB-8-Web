@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import PresenceForm from "@/components/create/PresenceForm";
 
 const stages = [
   "Create",
@@ -68,6 +69,8 @@ export default function CreatePage() {
             </p>
           </div>
         </section>
+
+        <PresenceForm />
 
         <footer className="py-10 text-sm text-[#5e6e64]">
           <Link href="/">← Return to homepage</Link>
