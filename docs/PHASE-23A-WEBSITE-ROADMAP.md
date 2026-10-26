@@ -24,9 +24,9 @@ Core software: HouseMachine/MOTB-8 v0.1.0
 | Subphase | Description | Status |
 |---|---|---|
 | 23A.1 | Infrastructure and Hosting | COMPLETE |
-| 23A.2 | Website Foundation and Navigation | BUILT - PUSH PENDING |
+| 23A.2 | Website Foundation and Navigation | COMPLETE |
 | 23A.3 | Create and Beacon Editor | COMPLETE |
-| 23A.4 | Browser Cryptographic Integration | NOT STARTED |
+| 23A.4 | Browser Cryptographic Integration | CORE COMPLETE - WEBSITE INTEGRATION PENDING |
 | 23A.5 | Complete Create Experience | NOT STARTED |
 | 23A.6 | Manage and Beacon Updates | NOT STARTED |
 | 23A.7 | Documentation and Publishing Guidance | NOT STARTED |
@@ -48,7 +48,7 @@ Status: COMPLETE.
 - Navigation connected.
 - Four-route production build passed.
 - Commit and push verified.
-Status: BUILT - PUSH PENDING.
+Status: COMPLETE.
 
 ### 23A.3 — Create and Beacon Editor
 - Required fields and conditional inputs.
@@ -60,7 +60,7 @@ Status: BUILT - PUSH PENDING.
 - Discoverability Bar.
 - Browser interaction tests.
 - Production build, commit, push, deployment verification.
-Status: IN PROGRESS.
+Status: COMPLETE.
 
 ### 23A.4 — Browser Cryptographic Integration
 - Compatible Tag generation and checksum.
@@ -69,7 +69,7 @@ Status: IN PROGRESS.
 - Compatible scrypt and AES-256-GCM Control File.
 - Cross-verification against core v0.1.0.
 - Private-key and passphrase isolation.
-Status: NOT STARTED.
+Status: CORE COMPLETE - WEBSITE INTEGRATION PENDING.
 
 ### 23A.5 — Complete Create Experience
 - Six-stage creation workflow.
@@ -168,3 +168,22 @@ Next subphase:
 - GitHub: pushed and synchronized
 - Vercel: production website verified
 - Next: Phase 23A.4 - Browser Cryptographic Integration
+
+
+## Phase 23A.4 Core Integration Record
+
+- Core repository: HouseMachine/MOTB-8
+- Core commit: e17c225
+- Branch: main
+- Browser-compatible core implementation committed and pushed.
+- 290 automated core tests passed.
+- Targeted ESLint checks passed.
+- TypeScript and browser production builds passed.
+- Real-browser cryptographic acceptance passed.
+- npm audit: zero reported vulnerabilities.
+- Browser package entry point: motb-8/browser.
+- Experimental browser-adapter backup deleted.
+- Website integration remains part of the Complete Create Experience.
+- No public identity-generation functionality is enabled yet.
+
+Next: Phase 23A.5 - Complete Create Experience.
