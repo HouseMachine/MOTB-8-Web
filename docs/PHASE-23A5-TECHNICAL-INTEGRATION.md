@@ -200,3 +200,74 @@ MOTB-8 Website service, not the abstract protocol specification.
 See MOTB8-FIRST-IDENTITY-ACCEPTANCE.md.
 See PHASE-23A5-CREATE-IMPLEMENTATION.md.
 See PHASE-23A-WEBSITE-ROADMAP.md.
+
+## Phase 23A.5.5 Control File and Download Integration
+
+Status: IMPLEMENTED AND TESTED
+Date: 2026-10-27
+
+### Implementation Files
+
+| File | Responsibility |
+|---|---|
+| src/lib/motb8/control-file.ts | Encryption and Genesis-bound recovery |
+| src/lib/motb8/artifacts.ts | Public/private artifact packaging |
+| src/lib/motb8/download.ts | Browser-local downloads |
+| tests/motb8-download.test.mts | Download utility tests |
+
+### Cryptographic Integration
+
+The official MOTB-8 core implements:
+
+- scrypt with N=32768, r=8, p=1.
+- AES-256-GCM authenticated encryption.
+- Random salt and nonce generation.
+- Genesis-bound controller recovery.
+- Non-extractable recovered signing keys.
+
+The website does not duplicate these algorithms.
+
+### Artifact Separation
+
+Public:
+- motb8-tag.txt
+- motb8-genesis.json
+- motb8-beacon.json
+
+Private:
+- motb8-control-private.json
+
+The packaging adapter independently verifies the
+encrypted Control File against Genesis.
+
+### Browser Downloads
+
+Downloads use browser-native Blob and object URL APIs.
+
+Download initiation does not guarantee that files
+have been saved or backed up.
+
+### Verification
+
+Generation/security tests:
+
+    npm run test:generation
+
+Website/download tests use the existing tsx runner,
+excluding the generation test file requiring ESM bundling.
+
+Results:
+- 14 generation/security tests passed.
+- 58 website/download tests passed.
+- Chrome download and reimport recovery passed.
+- TypeScript, ESLint, and production build passed.
+
+The temporary browser acceptance harness was removed.
+
+### Pending
+
+- Public Create workflow integration.
+- Concurrent and duplicate generation protection.
+- Operator backup acknowledgment.
+- End-to-end Create acceptance.
+- First production identity trial.

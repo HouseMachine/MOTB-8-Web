@@ -153,3 +153,6 @@ next-env.d.ts
 
 # Temporary MOTB-8 generation test bundles
 .motb8-generation-*/
+
+# Temporary local browser acceptance harness
+.motb8-browser-acceptance/

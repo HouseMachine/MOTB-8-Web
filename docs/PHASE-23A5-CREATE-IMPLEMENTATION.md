@@ -1,6 +1,6 @@
 # Phase 23A.5 — Complete Create Experience
 
-Status: IN PROGRESS - CHECKPOINTS 23A.5.1 THROUGH 23A.5.4 IMPLEMENTED
+Status: IN PROGRESS - CHECKPOINTS 23A.5.1 THROUGH 23A.5.5 IMPLEMENTED
 Repository: HouseMachine/MOTB-8-Web
 Branch: main
 Core repository: HouseMachine/MOTB-8
@@ -146,7 +146,7 @@ See MOTB8-FIRST-IDENTITY-ACCEPTANCE.md.
 
 ## Implementation Record - October 2026
 
-Current checkpoint: 23A.5.5 - Control File and Downloads
+Current checkpoint: 23A.5.6 - Completion Experience
 Website commit: a7dc505
 Pinned core commit: 02fdd99
 
@@ -245,3 +245,73 @@ public artifact exports, backup guidance, and recovery verification.
 
 The public Generate action must remain unavailable until the complete
 security and download lifecycle has been implemented and tested.
+
+## Phase 23A.5.5 Implementation Record
+
+Status: IMPLEMENTED AND TESTED
+Date: 2026-10-27
+
+### Control File Preparation
+
+File: src/lib/motb8/control-file.ts
+
+- Uses official MOTB-8 browser encryption.
+- Verifies Genesis and Beacon before encryption.
+- Encrypts controller credentials locally.
+- Verifies Genesis-bound controller recovery.
+- Confirms recovered private key is non-extractable.
+
+### Artifact Packaging
+
+File: src/lib/motb8/artifacts.ts
+
+- Separates public Tag, Genesis, and Beacon records.
+- Separates private encrypted Control File.
+- Verifies signed public records.
+- Independently verifies Control File recovery.
+- Rejects same-Tag controller substitution.
+
+### Browser Downloads
+
+File: src/lib/motb8/download.ts
+
+- Uses browser Blob and object URL APIs.
+- Creates temporary download anchors.
+- Assigns filenames and MIME types.
+- Cleans up temporary object URLs.
+- Handles download initiation errors.
+
+Download initiation does not prove durable backup.
+
+### Automated Tests
+
+- 14 generation and security tests passed.
+- 58 website and download tests passed.
+- 72 total tests passed.
+- TypeScript, ESLint, and production build passed.
+
+### Chrome Acceptance
+
+The temporary browser harness successfully tested:
+
+1. Synthetic identity generation.
+2. Encrypted Control File preparation.
+3. Public and private artifact packaging.
+4. Four artifact downloads.
+5. Browser page reload.
+6. Reimport of downloaded JSON files.
+7. Genesis and Beacon verification.
+8. Genesis-bound controller recovery.
+
+All acceptance steps passed.
+The temporary harness was removed.
+
+### Security Boundary
+
+- No production identity was generated.
+- No public artifact publication occurred.
+- No server-side private-key custody was introduced.
+- Public Generate action remains unavailable.
+- Operator backup confirmation remains pending.
+
+Next: Phase 23A.5.6 - Completion Experience.

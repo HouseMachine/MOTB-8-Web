@@ -191,7 +191,7 @@ Next: Phase 23A.5 - Complete Create Experience.
 ## Phase 23A.5 Implementation Progress
 
 Status: IN PROGRESS
-Current checkpoint: 23A.5.5 - Control File and Downloads
+Current checkpoint: 23A.5.6 - Completion Experience
 Core dependency: HouseMachine/MOTB-8 commit 02fdd99
 Website checkpoint: a7dc505
 
@@ -247,3 +247,54 @@ MOTB-8 Website service acceptance trial.
 
 See PHASE-23A5-CREATE-IMPLEMENTATION.md.
 See MOTB8-FIRST-IDENTITY-ACCEPTANCE.md.
+
+## Phase 23A.5.5 Control File and Downloads Release Record
+
+Status: IMPLEMENTED AND TESTED - DEPLOYMENT PENDING
+Date: 2026-10-27
+
+### Implementation
+
+- Browser-local encrypted Control File preparation.
+- Genesis-bound controller recovery verification.
+- Separate public Tag, Genesis, and Beacon artifacts.
+- Separate private encrypted Control File artifact.
+- Cryptographic Control File binding during packaging.
+- Browser-local downloads with object URL cleanup.
+- No automatic publication or server-side key custody.
+
+### Security Verification
+
+- Incorrect passphrase rejected.
+- Tampered ciphertext rejected.
+- Unrelated Genesis rejected.
+- Mismatched controller rejected.
+- Same-Tag substituted Control File rejected.
+- Recovered private key confirmed non-extractable.
+
+### Acceptance Results
+
+- Generation and security tests: 14 passed.
+- Website and download tests: 58 passed.
+- Total automated tests: 72 passed, zero failures.
+- TypeScript, ESLint, and production build passed.
+- Chrome download and reimport acceptance passed.
+
+Four synthetic artifacts were downloaded in Chrome.
+After reloading the page, downloaded Genesis, Beacon,
+and encrypted Control File records were reimported.
+
+Genesis and Beacon verification succeeded.
+The Control File unlocked against Genesis.
+
+The temporary browser acceptance harness was removed.
+
+### Remaining Work
+
+- Complete public-facing Create workflow.
+- Prevent concurrent or duplicate generation.
+- Require explicit operator backup acknowledgment.
+- Complete end-to-end acceptance.
+- Perform first real MOTB-8 Website identity trial.
+
+The public Generate action remains unavailable.

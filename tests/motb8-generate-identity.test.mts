@@ -127,3 +127,215 @@ test("separate generations produce distinct identities", async () => {
     second.controller.publicKeyJwk.x
   );
 });
+
+test("encrypts and recovers the generated controller", async () => {
+  const { prepareMotb8ControlFile } =
+    await import("../src/lib/motb8/control-file.ts");
+
+  const { unlockBrowserControlFile } =
+    await import("motb-8/browser");
+
+  const identity = await generateMotb8Identity(approvedInput());
+  const passphrase = "Synthetic-Control-Test-2026";
+
+  const prepared = await prepareMotb8ControlFile(
+    identity,
+    passphrase
+  );
+
+  assert.equal(prepared.recoveryVerified, true);
+  assert.equal(prepared.file.format, "MOTB-8-CONTROL");
+  assert.equal(prepared.file.version, "1.0");
+  assert.equal(prepared.file.motb8Tag, identity.tag);
+
+  assert.equal(prepared.file.kdf.algorithm, "scrypt");
+  assert.equal(prepared.file.encryption.algorithm, "AES-256-GCM");
+
+  const recovered = await unlockBrowserControlFile(
+    prepared.file,
+    passphrase,
+    identity.genesis
+  );
+
+  assert.equal(recovered.type, "private");
+  assert.equal(recovered.extractable, false);
+});
+
+test("rejects incorrect Control File passphrase", async () => {
+  const { prepareMotb8ControlFile } =
+    await import("../src/lib/motb8/control-file.ts");
+  const { unlockBrowserControlFile } =
+    await import("motb-8/browser");
+
+  const identity = await generateMotb8Identity(approvedInput());
+  const prepared = await prepareMotb8ControlFile(
+    identity,
+    "Synthetic-Control-Test-2026"
+  );
+
+  await assert.rejects(
+    unlockBrowserControlFile(
+      prepared.file,
+      "Incorrect-Control-Test-2026",
+      identity.genesis
+    )
+  );
+});
+
+test("rejects tampered Control File ciphertext", async () => {
+  const { prepareMotb8ControlFile } =
+    await import("../src/lib/motb8/control-file.ts");
+  const { unlockBrowserControlFile } =
+    await import("motb-8/browser");
+
+  const identity = await generateMotb8Identity(approvedInput());
+  const passphrase = "Synthetic-Control-Test-2026";
+  const prepared = await prepareMotb8ControlFile(identity, passphrase);
+
+  const tampered = {
+    ...prepared.file,
+    ciphertext:
+      (prepared.file.ciphertext[0] === "A" ? "B" : "A") +
+      prepared.file.ciphertext.slice(1)
+  };
+
+  await assert.rejects(
+    unlockBrowserControlFile(tampered, passphrase, identity.genesis)
+  );
+});
+
+test("rejects unrelated Genesis during Control File recovery", async () => {
+  const { prepareMotb8ControlFile } =
+    await import("../src/lib/motb8/control-file.ts");
+  const { unlockBrowserControlFile } =
+    await import("motb-8/browser");
+
+  const identity = await generateMotb8Identity(approvedInput());
+  const unrelated = await generateMotb8Identity(approvedInput());
+  const passphrase = "Synthetic-Control-Test-2026";
+
+  const prepared = await prepareMotb8ControlFile(
+    identity,
+    passphrase
+  );
+
+  await assert.rejects(
+    unlockBrowserControlFile(
+      prepared.file,
+      passphrase,
+      unrelated.genesis
+    ),
+    /Tag mismatch/
+  );
+});
+
+test("rejects mismatched controller before Control File encryption", async () => {
+  const { prepareMotb8ControlFile } =
+    await import("../src/lib/motb8/control-file.ts");
+  const { generateBrowserControllerKeyPair } =
+    await import("motb-8/browser");
+
+  const identity = await generateMotb8Identity(approvedInput());
+  const unrelatedController = await generateBrowserControllerKeyPair();
+
+  await assert.rejects(
+    prepareMotb8ControlFile(
+      { ...identity, controller: unrelatedController },
+      "Synthetic-Control-Test-2026"
+    ),
+    /Identity verification failed before encryption/
+  );
+});
+
+test("packages public and private identity artifacts separately", async () => {
+  const { prepareMotb8ControlFile } =
+    await import("../src/lib/motb8/control-file.ts");
+  const { prepareIdentityArtifacts } =
+    await import("../src/lib/motb8/artifacts.ts");
+
+  const identity = await generateMotb8Identity(approvedInput());
+  const passphrase = "Synthetic-Packaging-Test-2026";
+  const control = await prepareMotb8ControlFile(identity, passphrase);
+
+  const artifacts = await prepareIdentityArtifacts(identity, control, passphrase);
+
+  assert.deepEqual(
+    Object.keys(artifacts.public).sort(),
+    ["beacon", "genesis", "tag"]
+  );
+
+  assert.deepEqual(
+    Object.keys(artifacts.private),
+    ["controlFile"]
+  );
+
+  assert.equal(artifacts.public.tag.content.trim(), identity.tag);
+
+  assert.equal(
+    JSON.parse(artifacts.public.genesis.content).motb8Tag,
+    identity.tag
+  );
+
+  assert.equal(
+    JSON.parse(artifacts.public.beacon.content).motb8Tag,
+    identity.tag
+  );
+
+  assert.equal(
+    JSON.parse(artifacts.private.controlFile.content).motb8Tag,
+    identity.tag
+  );
+
+  const publicContents = Object.values(artifacts.public)
+    .map((artifact) => artifact.content)
+    .join("\n");
+
+  assert.equal(publicContents.includes(passphrase), false);
+  assert.equal(publicContents.includes('"ciphertext"'), false);
+  assert.equal(publicContents.includes('"privateKey"'), false);
+  assert.equal(publicContents.includes('"authTag"'), false);
+
+  assert.equal(artifacts.private.controlFile.mimeType, "application/json");
+});
+
+test("rejects a substituted Control File with the same Tag", async () => {
+  const { prepareMotb8ControlFile } =
+    await import("../src/lib/motb8/control-file.ts");
+  const { prepareIdentityArtifacts } =
+    await import("../src/lib/motb8/artifacts.ts");
+  const {
+    generateBrowserControllerKeyPair,
+    encryptBrowserControlFile
+  } = await import("motb-8/browser");
+
+  const identity = await generateMotb8Identity(approvedInput());
+  const passphrase = "Synthetic-Substitution-Test-2026";
+
+  const original = await prepareMotb8ControlFile(
+    identity,
+    passphrase
+  );
+
+  const unrelatedController = await generateBrowserControllerKeyPair();
+
+  const substitutedFile = await encryptBrowserControlFile(
+    identity.tag,
+    unrelatedController,
+    passphrase
+  );
+
+  assert.equal(substitutedFile.motb8Tag, identity.tag);
+  assert.notEqual(
+    unrelatedController.publicKeyJwk.x,
+    identity.genesis.controller.publicKeyJwk.x
+  );
+
+  await assert.rejects(
+    prepareIdentityArtifacts(
+      identity,
+      { ...original, file: substitutedFile },
+      passphrase
+    ),
+    /Recovered controller does not match Genesis/
+  );
+});
