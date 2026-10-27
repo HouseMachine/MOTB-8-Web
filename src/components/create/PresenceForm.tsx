@@ -7,6 +7,10 @@ import { validateBeaconForm } from "@/components/beacon/validation";
 import { calculateDiscoverability } from "@/components/discoverability/scoring";
 import DiscoverabilityBar from "@/components/discoverability/DiscoverabilityBar";
 import type { AttachmentDraftState } from "@/components/beacon/attachment-draft";
+import { normalizeBeaconRegistration } from "@/components/beacon/normalize";
+import { validateRegistrationSchema } from "@/components/beacon/schema-validation";
+import { registrationFingerprint } from "@/lib/motb8/fingerprint";
+import { beginReview, approveReview, invalidateReview, isReviewCurrent, initialCreateWorkflowState } from "@/lib/motb8/workflow";
 
 type PresenceScope = "single" | "composite";
 
@@ -27,6 +31,9 @@ export default function PresenceForm() {
   const [customType, setCustomType] = useState("");
   const [systemCount, setSystemCount] = useState(2);
   const [goodFaithAcknowledged, setGoodFaithAcknowledged] = useState(false);
+  const [workflow, setWorkflow] = useState(initialCreateWorkflowState);
+  const [reviewFingerprint, setReviewFingerprint] = useState<string | null>(null);
+
 
   const [attachmentDrafts, setAttachmentDrafts] =
     useState<AttachmentDraftState[]>([]);
@@ -83,11 +90,41 @@ export default function PresenceForm() {
     attachmentDrafts
   );
 
+  const normalizedRegistration = normalizeBeaconRegistration(formData);
+  const schemaValidation = validateRegistrationSchema(normalizedRegistration);
+  const currentFingerprint = registrationFingerprint(normalizedRegistration);
+
   const registrationReady =
-    validation.valid && goodFaithAcknowledged;
+    validation.valid && schemaValidation.valid && goodFaithAcknowledged;
+
+  const reviewIsCurrent =
+    reviewFingerprint === currentFingerprint &&
+    validation.valid &&
+    schemaValidation.valid &&
+    goodFaithAcknowledged;
+
+  const approvalIsCurrent =
+    reviewIsCurrent && isReviewCurrent(workflow, currentFingerprint);
+
+  function handleBeginReview() {
+    if (!registrationReady) return;
+    setReviewFingerprint(currentFingerprint);
+    setWorkflow(beginReview(true));
+  }
+
+  function handleApproveReview() {
+    if (workflow.stage !== "review" || !reviewIsCurrent) return;
+    setWorkflow(approveReview(workflow, currentFingerprint));
+  }
+
+  function handleReturnToEditing() {
+    setWorkflow(invalidateReview());
+    setReviewFingerprint(null);
+  }
 
   const readinessErrors = [
     ...validation.errors,
+    ...schemaValidation.errors,
     ...(!goodFaithAcknowledged
       ? ["Good-Faith Participation: Please acknowledge the declaration above."]
       : []),
@@ -282,7 +319,7 @@ export default function PresenceForm() {
 
         <p className="mt-3 text-sm text-[#5e6e64]">
           {registrationReady
-            ? "Current form checks and Good-Faith acknowledgment are complete. Final schema validation is still required."
+            ? "Registration fields and Good-Faith acknowledgment are validated. Complete signed Beacon verification occurs during identity generation."
             : "Some information needs attention before registration can proceed."}
         </p>
 
@@ -292,6 +329,68 @@ export default function PresenceForm() {
               <li key={index}>{error}</li>
             ))}
           </ul>
+        )}
+      </div>
+
+      <div className="mt-8 rounded-xl border border-[#dce4dc] bg-white p-6">
+        <h3 className="text-xl font-semibold">Review your public registration</h3>
+        <p className="mt-3 text-sm leading-6 text-[#5e6e64]">
+          Your Beacon information is intended for public discovery.
+          Review all fields carefully before approving registration.
+          Do not include passwords, private keys, or sensitive information.
+        </p>
+
+        {workflow.stage === "editing" && (
+          <button
+            type="button"
+            disabled={!registrationReady}
+            onClick={handleBeginReview}
+            className="mt-5 rounded-lg bg-[#174b3a] px-5 py-3 font-semibold text-white disabled:opacity-40"
+          >
+            Review Registration
+          </button>
+        )}
+
+        {workflow.stage !== "editing" && (
+          <div className="mt-5 space-y-4">
+            {!reviewIsCurrent && (
+              <p className="text-sm font-semibold text-red-700">
+                Registration information has changed. Review again before approval.
+              </p>
+            )}
+
+            <pre className="max-h-96 overflow-auto rounded-lg bg-[#f7f8f5] p-4 text-xs">
+              {JSON.stringify(normalizedRegistration, null, 2)}
+            </pre>
+
+            <div className="flex flex-wrap gap-3">
+              {workflow.stage === "review" && (
+                <button
+                  type="button"
+                  disabled={!reviewIsCurrent}
+                  onClick={handleApproveReview}
+                  className="rounded-lg bg-[#174b3a] px-5 py-3 font-semibold text-white disabled:opacity-40"
+                >
+                  Approve Public Registration
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={handleReturnToEditing}
+                className="rounded-lg border border-[#dce4dc] px-5 py-3 font-semibold"
+              >
+                Return to Editing
+              </button>
+            </div>
+          </div>
+        )}
+
+        {approvalIsCurrent && (
+          <p className="mt-5 font-semibold text-[#174b3a]">
+            Public registration approved. Identity generation will become
+            available after the remaining security and download steps are complete.
+          </p>
         )}
       </div>
     </section>
