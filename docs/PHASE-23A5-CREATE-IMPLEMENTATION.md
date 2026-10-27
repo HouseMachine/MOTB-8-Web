@@ -1,6 +1,6 @@
-﻿# Phase 23A.5 — Complete Create Experience
+# Phase 23A.5 — Complete Create Experience
 
-Status: PLANNED
+Status: IN PROGRESS - CHECKPOINTS 23A.5.1 THROUGH 23A.5.4 IMPLEMENTED
 Repository: HouseMachine/MOTB-8-Web
 Branch: main
 Core repository: HouseMachine/MOTB-8
@@ -143,3 +143,105 @@ Users can create and verify a permanent MOTB-8 identity, download public signed 
 The first real-world identity trial will register the MOTB-8 Website service.
 
 See MOTB8-FIRST-IDENTITY-ACCEPTANCE.md.
+
+## Implementation Record - October 2026
+
+Current checkpoint: 23A.5.5 - Control File and Downloads
+Website commit: a7dc505
+Pinned core commit: 02fdd99
+
+### 23A.5.1 - Core Package Integration
+
+Status: COMPLETE
+
+- Installed the official MOTB-8 browser package from GitHub.
+- Pinned the core dependency to an immutable commit.
+- Confirmed Next.js compatibility and production builds.
+- Verified browser cryptographic exports.
+- Added browser Beacon verification to the core.
+- Confirmed browser and Node verification parity.
+
+Website commits: 3c4cbdc, 0919288
+Core verifier commit: 02fdd99
+
+### 23A.5.2 - Registration Adapter
+
+Status: COMPLETE
+
+- Added src/lib/motb8/registration.ts.
+- Reused existing Beacon form normalization.
+- Validated registration against the canonical Beacon schema.
+- Preserved optional fields and conditional presence information.
+- Prepared Good-Faith acknowledgment metadata.
+- Excluded generated identity fields from registration input.
+- Verified compatibility with the core unsigned Beacon validator.
+
+Commit: 948d027
+Dedicated tests: 10 passed
+
+### 23A.5.3 - Create Workflow Controller
+
+Status: COMPLETE FOR REVIEW AND APPROVAL
+
+- Added workflow.ts and fingerprint.ts.
+- Implemented editing, review, and approved states.
+- Added deterministic registration change detection.
+- Required explicit public-information review.
+- Invalidated approval when registration content changes.
+- Added generation-readiness checks.
+- Connected review and approval controls to PresenceForm.
+
+Commit: 3971a7c
+Workflow tests: 7 passed
+Fingerprint tests: 5 passed
+
+Remaining:
+- Complete six-stage navigation.
+- Prevent accidental concurrent or duplicate generation.
+
+### 23A.5.4 - Identity Generation and Verification
+
+Status: IMPLEMENTED - RELEASE VERIFICATION PENDING
+
+- Added src/lib/motb8/generate-identity.ts.
+- Reused the official motb-8/browser cryptographic API.
+- Generated permanent Tags and Ed25519 controllers.
+- Created signed Genesis Records.
+- Constructed initial signed Beacon v1.1 records.
+- Used revision 1 with no predecessor hash.
+- Verified Genesis and Beacon cryptographic consistency.
+- Preserved VALID_UNANCHORED verification status.
+- Rejected missing approval, stale review, and invalid registration.
+- Added an isolated ESM test runner.
+
+Commit: a7dc505
+Dedicated generation tests: 7 passed
+
+Remaining:
+- Confirm Vercel deployment for a7dc505.
+- Confirm the latest 54-test website regression.
+- Integrate secure Control File creation and downloads.
+- Keep public generation disabled until the complete lifecycle is ready.
+
+### Verification and Security Notes
+
+- The browser core owns Tag generation, signing, and verification.
+- The website does not implement independent cryptographic algorithms.
+- Controller credentials remain browser-local.
+- The generation service currently retains an extractable private key
+  in memory for subsequent encrypted Control File creation.
+- No server-side private-key custody is implemented.
+- No automatic publication occurs during identity generation.
+- Synthetic test identities are disposable and unpublished.
+- VALID_UNANCHORED confirms self-signed consistency, not
+  independently established original ownership.
+
+### Next Checkpoint
+
+23A.5.5 - Control File and Downloads
+
+Implement browser-local encryption, private Control File download,
+public artifact exports, backup guidance, and recovery verification.
+
+The public Generate action must remain unavailable until the complete
+security and download lifecycle has been implemented and tested.

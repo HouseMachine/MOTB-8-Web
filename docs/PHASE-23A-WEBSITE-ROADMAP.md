@@ -26,8 +26,8 @@ Core software: HouseMachine/MOTB-8 v0.1.0
 | 23A.1 | Infrastructure and Hosting | COMPLETE |
 | 23A.2 | Website Foundation and Navigation | COMPLETE |
 | 23A.3 | Create and Beacon Editor | COMPLETE |
-| 23A.4 | Browser Cryptographic Integration | CORE COMPLETE - WEBSITE INTEGRATION PENDING |
-| 23A.5 | Complete Create Experience | NOT STARTED |
+| 23A.4 | Browser Cryptographic Integration | CORE COMPLETE - INTEGRATED INTO WEBSITE |
+| 23A.5 | Complete Create Experience | IN PROGRESS - CHECKPOINTS 1-4 IMPLEMENTED |
 | 23A.6 | Manage and Beacon Updates | NOT STARTED |
 | 23A.7 | Documentation and Publishing Guidance | NOT STARTED |
 | 23A.8 | UX, Security and Compatibility QA | NOT STARTED |
@@ -69,7 +69,7 @@ Status: COMPLETE.
 - Compatible scrypt and AES-256-GCM Control File.
 - Cross-verification against core v0.1.0.
 - Private-key and passphrase isolation.
-Status: CORE COMPLETE - WEBSITE INTEGRATION PENDING.
+Status: CORE COMPLETE - INTEGRATED INTO WEBSITE.
 
 ### 23A.5 — Complete Create Experience
 - Six-stage creation workflow.
@@ -77,7 +77,7 @@ Status: CORE COMPLETE - WEBSITE INTEGRATION PENDING.
 - Your Machine Is Marked confirmation.
 - Control File download and backup guidance.
 - Public artifact exports.
-Status: NOT STARTED.
+Status: IN PROGRESS - CHECKPOINTS 1-4 IMPLEMENTED.
 
 ### 23A.6 — Manage and Beacon Updates
 - Load Control File and public records.
@@ -187,3 +187,63 @@ Next subphase:
 - No public identity-generation functionality is enabled yet.
 
 Next: Phase 23A.5 - Complete Create Experience.
+
+## Phase 23A.5 Implementation Progress
+
+Status: IN PROGRESS
+Current checkpoint: 23A.5.5 - Control File and Downloads
+Core dependency: HouseMachine/MOTB-8 commit 02fdd99
+Website checkpoint: a7dc505
+
+### Completed Implementation
+
+- 23A.5.1 - Core Package Integration
+  - Official motb-8/browser package integrated.
+  - Initial website integration commit: 3c4cbdc.
+  - Browser Beacon verification added to core at 02fdd99.
+  - Website dependency updated at 0919288.
+
+- 23A.5.2 - Registration Adapter
+  - Form normalization and canonical registration validation.
+  - Good-Faith acknowledgment preparation.
+  - Core unsigned Beacon compatibility.
+  - Commit: 948d027.
+
+- 23A.5.3 - Create Workflow Controller
+  - Editing, review, and approval states.
+  - Deterministic registration fingerprints.
+  - Stale approval detection and review invalidation.
+  - Public registration review interface.
+  - Commit: 3971a7c.
+
+- 23A.5.4 - Identity Generation and Verification
+  - Isolated browser-local identity-generation service.
+  - Permanent Tag and Ed25519 controller generation.
+  - Signed Genesis and initial Beacon v1.1.
+  - Cryptographic verification of generated records.
+  - Seven synthetic generation tests passed.
+  - Commit: a7dc505.
+
+### Outstanding Release Verification
+
+- Confirm Vercel deployment for website commit a7dc505.
+- Confirm the latest 54-test website regression run.
+- Complete the Control File and download lifecycle.
+- Implement the full six-stage Create interface.
+- Implement duplicate-generation protection.
+- Complete real-browser end-to-end acceptance.
+- Perform the first production identity trial.
+
+### Security Boundary
+
+Identity generation is implemented as an isolated service.
+It is not exposed through the public Create interface.
+
+Private controller credentials remain browser-local.
+Encrypted Control File creation and secure downloads are pending.
+
+The first permanent production identity is reserved for the
+MOTB-8 Website service acceptance trial.
+
+See PHASE-23A5-CREATE-IMPLEMENTATION.md.
+See MOTB8-FIRST-IDENTITY-ACCEPTANCE.md.
