@@ -150,3 +150,6 @@ vite.config.ts.timestamp-*
 
 # Generated Next.js TypeScript references
 next-env.d.ts
+
+# Temporary MOTB-8 generation test bundles
+.motb8-generation-*/
