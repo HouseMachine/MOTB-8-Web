@@ -61,11 +61,13 @@ export default function CreatePage() {
           </ol>
 
           <div className="mt-8 rounded-xl bg-[#eaf1e9] p-5">
-            <p className="font-semibold">Browser creation coming next</p>
+            <p className="font-semibold">Your identity, under your control</p>
             <p className="mt-2 text-sm leading-6 text-[#5e6e64]">
-              The interface is being connected to the existing MOTB-8
-              open-source software. Identifier generation is not yet
-              available on this page.
+              MOTB-8 generates your permanent Tag and controller locally
+              in your browser. Your encrypted Control File is yours to
+              retain. Save it and its passphrase securely before leaving
+              the creation process. Publishing your public records is
+              a separate step.
             </p>
           </div>
         </section>

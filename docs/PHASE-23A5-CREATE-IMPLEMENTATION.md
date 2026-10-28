@@ -315,3 +315,65 @@ The temporary harness was removed.
 - Operator backup confirmation remains pending.
 
 Next: Phase 23A.5.6 - Completion Experience.
+
+## Phase 23A.5.6 Implementation Record
+
+Status: IMPLEMENTED AND TESTED
+Date: 2026-10-27
+
+### Lifecycle Controller
+
+File: src/lib/motb8/create-lifecycle.ts
+
+- Coordinates generation, encryption, and packaging.
+- Enforces current registration approval.
+- Prevents concurrent generation.
+- Preserves the original Tag after retryable failures.
+- Retains encrypted Control File after packaging failure.
+- Rejects incorrect retry passphrases.
+- Rejects registration changes after generation.
+- Does not store plaintext passphrases as class properties.
+
+### Create Interface
+
+File: src/components/create/PresenceForm.tsx
+
+- Connects approved registration to lifecycle.
+- Requires Control File passphrase confirmation.
+- Displays generation errors and retry controls.
+- Locks registration during and after generation.
+- Prevents returning to editing after Tag creation.
+
+### Completion Interface
+
+File: src/components/create/CreationCompletion.tsx
+
+- Displays the permanent Tag.
+- Provides private Control File download.
+- Provides public Tag, Genesis, and Beacon downloads.
+- Requires explicit operator backup acknowledgment.
+- Displays Your Machine Is Marked confirmation.
+- Distinguishes local creation from public publication.
+
+### Create Page
+
+File: src/app/create/page.tsx
+
+- Updated browser-local identity and custody guidance.
+- Preserved the six-stage creation overview.
+
+### Testing
+
+- 20 generation/security/lifecycle tests passed.
+- 58 website/download regression tests passed.
+- 78 total automated tests passed.
+- Production build and static checks passed.
+- Local Chrome synthetic Create acceptance passed.
+
+### Limitations
+
+- Identity custody remains browser-local.
+- Recovery after browser closure requires saved artifacts.
+- Backup acknowledgment is operator-declared.
+- No automatic publication occurs.
+- Cross-session duplicate prevention is not provided.

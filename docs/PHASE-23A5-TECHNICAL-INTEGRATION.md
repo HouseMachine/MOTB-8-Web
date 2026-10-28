@@ -271,3 +271,58 @@ The temporary browser acceptance harness was removed.
 - Operator backup acknowledgment.
 - End-to-end Create acceptance.
 - First production identity trial.
+
+## Phase 23A.5.6 Lifecycle and UI Integration
+
+Status: IMPLEMENTED AND TESTED
+Date: 2026-10-27
+
+### Integration Architecture
+
+PresenceForm
+  -> Motb8CreationLifecycle
+  -> generateMotb8Identity
+  -> prepareMotb8ControlFile
+  -> prepareIdentityArtifacts
+  -> CreationCompletion
+  -> downloadMotb8Artifact
+
+### Lifecycle Responsibilities
+
+- Validate current approval and registration fingerprint.
+- Prevent concurrent preparation.
+- Generate a permanent identity once per lifecycle instance.
+- Preserve identity and encrypted Control File across retries.
+- Prevent repeated preparation after successful packaging.
+- Expose verified artifacts for download.
+
+### Cryptographic Responsibilities
+
+- Core browser API generates Tag and Ed25519 controller.
+- Core signs Genesis and Beacon.
+- Control File adapter verifies encrypted recovery.
+- Artifact adapter independently verifies exported records.
+- Lifecycle coordinates these operations without implementing
+  independent cryptographic algorithms.
+
+### User Interface Responsibilities
+
+- Validate and review public registration.
+- Confirm passphrase before generation.
+- Lock registration after generation begins.
+- Present private and public downloads separately.
+- Require explicit backup acknowledgment.
+- Display completion without claiming publication.
+
+### Verification
+
+- 20 generation/security/lifecycle tests passed.
+- 58 website/download tests passed.
+- Local Chrome Create workflow accepted.
+- TypeScript, ESLint, and Next.js production build passed.
+
+### Outstanding Acceptance
+
+- Additional browser compatibility testing.
+- Final security and accessibility review.
+- First production identity trial.

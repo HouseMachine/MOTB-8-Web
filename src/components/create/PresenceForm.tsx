@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import CreationCompletion from "./CreationCompletion";
+import { Motb8CreationLifecycle } from "@/lib/motb8/create-lifecycle";
+import type { IdentityArtifactPackage } from "@/lib/motb8/artifacts";
 import OptionalBeaconFields from "@/components/beacon/OptionalBeaconFields";
 import type { BeaconFormData } from "@/components/beacon/types";
 import { validateBeaconForm } from "@/components/beacon/validation";
@@ -33,6 +36,19 @@ export default function PresenceForm() {
   const [goodFaithAcknowledged, setGoodFaithAcknowledged] = useState(false);
   const [workflow, setWorkflow] = useState(initialCreateWorkflowState);
   const [reviewFingerprint, setReviewFingerprint] = useState<string | null>(null);
+
+  const lifecycleRef = useRef<Motb8CreationLifecycle | null>(null);
+  const generationBusyRef = useRef(false);
+
+  const [controlPassphrase, setControlPassphrase] = useState("");
+  const [confirmPassphrase, setConfirmPassphrase] = useState("");
+  const [generationBusy, setGenerationBusy] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
+  const [generatedTag, setGeneratedTag] = useState<string | null>(null);
+  const [identityCreationStarted, setIdentityCreationStarted] = useState(false);
+  const [generatedArtifacts, setGeneratedArtifacts] =
+    useState<IdentityArtifactPackage | null>(null);
+
 
 
   const [attachmentDrafts, setAttachmentDrafts] =
@@ -118,9 +134,86 @@ export default function PresenceForm() {
   }
 
   function handleReturnToEditing() {
+    if (generationBusyRef.current ||
+        lifecycleRef.current?.getSnapshot().tag) {
+      return;
+    }
+
     setWorkflow(invalidateReview());
     setReviewFingerprint(null);
   }
+
+  async function handleGenerateIdentity() {
+    if (generationBusyRef.current || generatedArtifacts) return;
+
+    if (!approvalIsCurrent) {
+      setGenerationError("Registration approval is no longer current.");
+      return;
+    }
+
+    if (controlPassphrase.length < 12) {
+      setGenerationError("Control File passphrase must contain at least 12 characters.");
+      return;
+    }
+
+    if (controlPassphrase !== confirmPassphrase) {
+      setGenerationError("Control File passphrases do not match.");
+      return;
+    }
+
+    generationBusyRef.current = true;
+    setGenerationBusy(true);
+    setIdentityCreationStarted(true);
+    setGenerationError(null);
+
+    try {
+      if (!lifecycleRef.current) {
+        lifecycleRef.current = new Motb8CreationLifecycle();
+      }
+
+      const artifacts = await lifecycleRef.current.prepare(
+        {
+          formData,
+          attachmentDrafts,
+          acknowledged: goodFaithAcknowledged,
+          workflow,
+          reviewFingerprint
+        },
+        controlPassphrase
+      );
+
+      const snapshot = lifecycleRef.current.getSnapshot();
+
+      if (!snapshot.tag || !snapshot.artifactsReady) {
+        throw new Error("Identity preparation did not complete.");
+      }
+
+      setGeneratedTag(snapshot.tag);
+      setGeneratedArtifacts(artifacts);
+      setControlPassphrase("");
+      setConfirmPassphrase("");
+    } catch (error) {
+      const snapshot = lifecycleRef.current?.getSnapshot();
+
+      if (!snapshot?.tag) {
+        setIdentityCreationStarted(false);
+      } else {
+        setGeneratedTag(snapshot.tag);
+      }
+
+      setGenerationError(
+        error instanceof Error
+          ? error.message
+          : "Identity generation failed."
+      );
+    } finally {
+      generationBusyRef.current = false;
+      setGenerationBusy(false);
+    }
+  }
+
+  const registrationLocked =
+    generationBusy || identityCreationStarted || generatedTag !== null;
 
   const readinessErrors = [
     ...validation.errors,
@@ -144,6 +237,14 @@ export default function PresenceForm() {
         </p>
       </div>
 
+      <fieldset
+        disabled={registrationLocked}
+        className={`min-w-0 ${
+          registrationLocked
+            ? "[&_input]:bg-[#f1f3f0] [&_textarea]:bg-[#f1f3f0] [&_select]:bg-[#f1f3f0] [&_input]:text-[#718078] [&_textarea]:text-[#718078] [&_select]:text-[#718078] [&_input]:cursor-not-allowed [&_textarea]:cursor-not-allowed [&_select]:cursor-not-allowed"
+            : ""
+        }`}
+      >
       <form className="space-y-6" onSubmit={(event) => event.preventDefault()}>
         <div>
           <label htmlFor="presence-name" className="mb-2 block font-semibold">
@@ -332,6 +433,8 @@ export default function PresenceForm() {
         )}
       </div>
 
+      </fieldset>
+
       <div className="mt-8 rounded-xl border border-[#dce4dc] bg-white p-6">
         <h3 className="text-xl font-semibold">Review your public registration</h3>
         <p className="mt-3 text-sm leading-6 text-[#5e6e64]">
@@ -343,9 +446,9 @@ export default function PresenceForm() {
         {workflow.stage === "editing" && (
           <button
             type="button"
-            disabled={!registrationReady}
+            disabled={!registrationReady || registrationLocked}
             onClick={handleBeginReview}
-            className="mt-5 rounded-lg bg-[#174b3a] px-5 py-3 font-semibold text-white disabled:opacity-40"
+            className="button mt-5 rounded-lg bg-[#174b3a] px-5 py-3 font-semibold text-white disabled:opacity-40"
           >
             Review Registration
           </button>
@@ -367,29 +470,102 @@ export default function PresenceForm() {
               {workflow.stage === "review" && (
                 <button
                   type="button"
-                  disabled={!reviewIsCurrent}
+                  disabled={!reviewIsCurrent || registrationLocked}
                   onClick={handleApproveReview}
-                  className="rounded-lg bg-[#174b3a] px-5 py-3 font-semibold text-white disabled:opacity-40"
+                  className="button rounded-lg bg-[#174b3a] px-5 py-3 font-semibold text-white disabled:opacity-40"
                 >
                   Approve Public Registration
                 </button>
               )}
 
-              <button
-                type="button"
-                onClick={handleReturnToEditing}
-                className="rounded-lg border border-[#dce4dc] px-5 py-3 font-semibold"
-              >
-                Return to Editing
-              </button>
+              {!registrationLocked && (
+                <button
+                  type="button"
+                  onClick={handleReturnToEditing}
+                  className="button rounded-lg border border-[#dce4dc] px-5 py-3 font-semibold"
+                >
+                  Return to Editing
+                </button>
+              )}
             </div>
           </div>
         )}
 
-        {approvalIsCurrent && (
+        {approvalIsCurrent && !generatedArtifacts && (
+          <div className="mt-6 rounded-xl border border-[#dce4dc] p-5">
+            <h3 className="text-lg font-semibold">Generate your MOTB-8 identity</h3>
+
+            <p className="mt-3 text-sm leading-6 text-[#5e6e64]">
+              Your permanent Tag and controller will be generated locally.
+              Choose a Control File passphrase and retain it securely.
+              MOTB-8 cannot recover a lost passphrase.
+            </p>
+
+            <label className="mt-5 block text-sm font-semibold">
+              Control File passphrase
+              <input
+                type="password"
+                autoComplete="new-password"
+                value={controlPassphrase}
+                onChange={(event) => setControlPassphrase(event.target.value)}
+                disabled={generationBusy}
+                className="mt-2 w-full rounded-lg border border-[#dce4dc] p-3"
+              />
+            </label>
+
+            <label className="mt-4 block text-sm font-semibold">
+              Confirm passphrase
+              <input
+                type="password"
+                autoComplete="new-password"
+                value={confirmPassphrase}
+                onChange={(event) => setConfirmPassphrase(event.target.value)}
+                disabled={generationBusy}
+                className="mt-2 w-full rounded-lg border border-[#dce4dc] p-3"
+              />
+            </label>
+
+            {generatedTag && (
+              <p className="mt-4 text-sm font-semibold text-amber-800">
+                Your permanent Tag has already been generated.
+                Retry preparation without creating another identity.
+                If your encrypted Control File was already prepared,
+                use its original passphrase.
+              </p>
+            )}
+
+            <button
+              type="button"
+              disabled={generationBusy}
+              onClick={handleGenerateIdentity}
+              className="button mt-5 rounded-lg bg-[#174b3a] px-5 py-3 font-semibold text-white disabled:opacity-40"
+            >
+              {generationBusy
+                ? "Preparing identity..."
+                : generatedTag
+                  ? "Retry Identity Preparation"
+                  : "Generate MOTB-8"}
+            </button>
+          </div>
+        )}
+
+        {generationError && (
+          <p role="alert" className="mt-5 text-sm text-red-700">
+            {generationError}
+          </p>
+        )}
+
+        {generatedTag && generatedArtifacts && (
+          <CreationCompletion
+            tag={generatedTag}
+            artifacts={generatedArtifacts}
+          />
+        )}
+
+        {approvalIsCurrent && !generatedTag && (
           <p className="mt-5 font-semibold text-[#174b3a]">
-            Public registration approved. Identity generation will become
-            available after the remaining security and download steps are complete.
+            Public registration approved.
+            Your identity can now be prepared using the controls above.
           </p>
         )}
       </div>
