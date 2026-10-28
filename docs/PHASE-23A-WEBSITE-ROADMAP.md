@@ -26,10 +26,10 @@ Core software: HouseMachine/MOTB-8 v0.1.0
 | 23A.1 | Infrastructure and Hosting | COMPLETE |
 | 23A.2 | Website Foundation and Navigation | COMPLETE |
 | 23A.3 | Create and Beacon Editor | COMPLETE |
-| 23A.4 | Browser Cryptographic Integration | CORE COMPLETE - INTEGRATED INTO WEBSITE |
-| 23A.5 | Complete Create Experience | IN PROGRESS - CHECKPOINTS 1-4 IMPLEMENTED |
-| 23A.6 | Manage and Beacon Updates | NOT STARTED |
-| 23A.7 | Documentation and Publishing Guidance | NOT STARTED |
+| 23A.4 | Browser Cryptographic Integration | COMPLETE |
+| 23A.5 | Complete Create Experience | IMPLEMENTED - FINAL ACCEPTANCE PENDING |
+| 23A.6 | Manage and Beacon Updates | IMPLEMENTED - FINAL ACCEPTANCE PENDING |
+| 23A.7 | Documentation and Publishing Guidance | IMPLEMENTED - RELEASE VERIFICATION PENDING |
 | 23A.8 | UX, Security and Compatibility QA | NOT STARTED |
 | 23A.9 | MVP Release and Verification | NOT STARTED |
 

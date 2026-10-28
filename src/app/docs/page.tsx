@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import OperatorGuide from "@/components/docs/OperatorGuide";
 
 const concepts = [
   {
@@ -68,6 +69,8 @@ export default function DocsPage() {
           ))}
         </section>
 
+        <OperatorGuide />
+
         <section className="mt-10 rounded-2xl bg-[#eaf1e9] p-6 sm:p-10">
           <h2 className="text-2xl font-bold">
             Built in the open.
@@ -87,6 +90,25 @@ export default function DocsPage() {
           >
             View core documentation ↗
           </a>
+
+          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+            <a
+              href="https://github.com/HouseMachine/MOTB-8-Web/blob/main/docs/MOTB8-OPERATOR-PUBLISHING-GUIDE.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[#174b3a] hover:underline"
+            >
+              Operator publishing guide
+            </a>
+            <a
+              href="https://github.com/HouseMachine/MOTB-8-Web"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[#174b3a] hover:underline"
+            >
+              Website source code
+            </a>
+          </div>
         </section>
 
         <section className="py-12">
