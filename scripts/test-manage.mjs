@@ -41,6 +41,3 @@ try {
 } finally {
   rmSync(directory, { recursive: true, force: true });
 }
-
-
-

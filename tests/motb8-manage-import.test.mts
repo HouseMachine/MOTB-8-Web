@@ -113,4 +113,3 @@ test("rejects unrelated controller credentials", async () => {
     /Recovered controller does not match Genesis/
   );
 });
-

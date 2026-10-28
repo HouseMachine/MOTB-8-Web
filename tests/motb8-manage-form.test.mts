@@ -86,4 +86,3 @@ test("Manage adapter initializes omitted optional sections", () => {
   assert.deepEqual(form.relationships, []);
   assert.deepEqual(form.attachments, []);
 });
-
