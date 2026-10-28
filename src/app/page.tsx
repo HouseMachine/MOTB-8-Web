@@ -147,19 +147,18 @@ export default function Home() {
             <p className="eyebrow">GET STARTED</p>
             <h2>Your machine deserves its own mark.</h2>
             <p>
-              The browser-based creation and management tools are being
-              prepared. In the meantime, the open-source MOTB-8 software and
-              documentation are available on GitHub.
+              Create your machine&apos;s permanent MOTB-8 identity, securely
+              retain your Control File, and return to update your signed
+              Beacon. The browser-based tools are available now, with
+              no account required.
             </p>
           </div>
 
           <a
-            href="https://github.com/HouseMachine/MOTB-8"
+            href="/create"
             className="button button-primary"
-            target="_blank"
-            rel="noopener noreferrer"
           >
-            Explore the software ↗
+            Create MOTB-8
           </a>
         </section>
       </main>

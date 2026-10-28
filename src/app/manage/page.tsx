@@ -72,9 +72,10 @@ export default function ManagePage() {
             {managementSteps.map((step) => (
               <li
                 key={step.number}
-                className="rounded-xl border border-[#dce4dc] p-5"
+                className="rounded-xl border border-[#a8cbb5] p-5"
+                style={{ backgroundColor: "#eaf1e9" }}
               >
-                <span className="text-xs font-bold text-[#40735a]">
+                <span className="text-xs font-bold tracking-wide text-[#174b3a]">
                   STEP {step.number}
                 </span>
                 <h3 className="mt-3 text-lg font-semibold">

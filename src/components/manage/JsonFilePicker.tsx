@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useId } from "react";
 
@@ -48,9 +48,8 @@ export default function JsonFilePicker({
 
       <label
         htmlFor={id}
-        className="inline-flex min-h-[50px] min-w-[205px] cursor-pointer items-center justify-center gap-3 rounded-lg border border-[#baccc0] bg-white px-6 py-3 text-sm font-semibold text-[#174b3a] transition-colors hover:border-[#174b3a] hover:bg-[#eaf1e9] peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#174b3a] peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
+        className="inline-flex min-h-[50px] min-w-[205px] cursor-pointer items-center justify-center rounded-lg border border-[#baccc0] bg-white px-6 py-3 text-sm font-semibold text-[#174b3a] transition-colors hover:border-[#174b3a] hover:bg-[#eaf1e9] peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#174b3a] peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
       >
-        <span aria-hidden="true">â†‘</span>
         Choose JSON File
       </label>
 
