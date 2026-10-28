@@ -7,13 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:generation": "node scripts/test-generation.mjs"
+    "test:generation": "node scripts/test-generation.mjs",
+    "test:manage": "node scripts/test-manage.mjs"
   },
   "dependencies": {
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "canonicalize": "^5.1.0",
-    "motb-8": "github:HouseMachine/MOTB-8#02fdd99",
+    "motb-8": "github:HouseMachine/MOTB-8#24d5c0d",
     "next": "16.4.3",
     "react": "19.3.0",
     "react-dom": "19.3.0"

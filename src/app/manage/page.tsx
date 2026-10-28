@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import ManageIdentityImport from "@/components/manage/ManageIdentityImport";
 
 const managementSteps = [
   {
@@ -86,16 +87,7 @@ export default function ManagePage() {
             ))}
           </ol>
 
-          <div className="mt-8 rounded-xl bg-[#eaf1e9] p-5">
-            <p className="font-semibold">
-              Browser management coming next
-            </p>
-            <p className="mt-2 text-sm leading-6 text-[#5e6e64]">
-              Local Control File unlocking and authorized Beacon
-              updates will become available after integration with
-              the MOTB-8 core software.
-            </p>
-          </div>
+          <ManageIdentityImport />
         </section>
 
         <footer className="py-10 text-sm text-[#5e6e64]">

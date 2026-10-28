@@ -104,21 +104,35 @@ export default function OptionalBeaconFields({
           {value.capabilities.map((entry, index) => (
             <div key={index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
               {(["id", "name", "vocabulary", "description"] as const).map(
-                (field) => (
-                  <input
-                    key={field}
-                    aria-label={`Capability ${field}`}
-                    placeholder={`Capability ${field}`}
-                    value={entry[field] ?? ""}
-                    maxLength={field === "description" ? 500 : field === "vocabulary" ? 200 : 160}
-                    onChange={(event) => {
-                      const next = [...value.capabilities];
-                      next[index] = { ...entry, [field]: event.target.value };
-                      update("capabilities", next);
-                    }}
-                    className="rounded-lg border border-[#dce4dc] p-3"
-                  />
-                )
+                (field) => {
+                  const guidance = {
+                    id: ["Capability ID", "research-analysis"],
+                    name: ["Capability name", "Research and Analysis"],
+                    vocabulary: ["Vocabulary (optional)", "custom"],
+                    description: [
+                      "What does this capability do? (optional)",
+                      "Gathers information and produces research summaries."
+                    ]
+                  }[field];
+
+                  return (
+                    <label key={field} className="block text-sm font-semibold">
+                      {guidance[0]}
+                      <input
+                        type="text"
+                        placeholder={`e.g., ${guidance[1]}`}
+                        value={entry[field] ?? ""}
+                        maxLength={field === "description" ? 500 : field === "vocabulary" ? 200 : 160}
+                        onChange={(event) => {
+                          const next = [...value.capabilities];
+                          next[index] = { ...entry, [field]: event.target.value };
+                          update("capabilities", next);
+                        }}
+                        className="mt-2 w-full rounded-lg border border-[#dce4dc] bg-white p-3 font-normal"
+                      />
+                    </label>
+                  );
+                }
               )}
               <button
                 type="button"
