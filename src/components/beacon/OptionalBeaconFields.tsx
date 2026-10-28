@@ -167,21 +167,31 @@ export default function OptionalBeaconFields({
         <div className="mt-5 space-y-4">
           {value.reachability.map((entry, index) => (
             <div key={index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
-              {(["type", "value", "label"] as const).map((field) => (
-                <input
-                  key={field}
-                  aria-label={`Reachability ${field}`}
-                  placeholder={field}
-                  maxLength={field === "value" ? 2048 : field === "type" ? 100 : 160}
-                  value={entry[field] ?? ""}
-                  onChange={(event) => {
-                    const next = [...value.reachability];
-                    next[index] = { ...entry, [field]: event.target.value };
-                    update("reachability", next);
-                  }}
-                  className="rounded-lg border border-[#dce4dc] p-3"
-                />
-              ))}
+              {(["type", "value", "label"] as const).map((field) => {
+                const guidance = {
+                  type: ["Contact or connection type", "website, email, API"],
+                  value: ["Contact address or URL", "https://motb8.com"],
+                  label: ["Display label (optional)", "Official MOTB-8 Website"]
+                }[field];
+
+                return (
+                  <label key={field} className="grid gap-2 text-sm font-semibold">
+                    {guidance[0]}
+                    <input
+                      aria-label={guidance[0]}
+                      placeholder={`e.g., ${guidance[1]}`}
+                      maxLength={field === "value" ? 2048 : field === "type" ? 100 : 160}
+                      value={entry[field] ?? ""}
+                      onChange={(event) => {
+                        const next = [...value.reachability];
+                        next[index] = { ...entry, [field]: event.target.value };
+                        update("reachability", next);
+                      }}
+                      className="rounded-lg border border-[#dce4dc] p-3 font-normal"
+                    />
+                  </label>
+                );
+              })}
               <button type="button"
                 onClick={() => update("reachability", value.reachability.filter((_, i) => i !== index))}
                 className="text-left text-sm text-red-700">
@@ -206,18 +216,25 @@ export default function OptionalBeaconFields({
             <div key={field}>
               <h3 className="mb-3 font-medium capitalize">{field}</h3>
               {value.profiles[field].map((entry, index) => (
-                <div key={index} className="mb-2 flex gap-2">
-                  <input
-                    aria-label={`${field} entry`}
-                    value={entry}
-                    maxLength={160}
-                    onChange={(event) => {
-                      const next = [...value.profiles[field]];
-                      next[index] = event.target.value;
-                      update("profiles", { ...value.profiles, [field]: next });
-                    }}
-                    className="min-w-0 flex-1 rounded-lg border border-[#dce4dc] p-3"
-                  />
+                <div key={index} className="mb-3 flex items-end gap-3">
+                  <label className="grid min-w-0 flex-1 gap-2 text-sm font-semibold">
+                    {field === "developers"
+                      ? "Developer name or identifier"
+                      : "Organization name"}
+                    <input
+                      placeholder={field === "developers"
+                        ? "e.g., HouseMachine"
+                        : "e.g., MOTB-8 Project"}
+                      value={entry}
+                      maxLength={160}
+                      onChange={(event) => {
+                        const next = [...value.profiles[field]];
+                        next[index] = event.target.value;
+                        update("profiles", { ...value.profiles, [field]: next });
+                      }}
+                      className="min-w-0 rounded-lg border border-[#dce4dc] p-3 font-normal"
+                    />
+                  </label>
                   <button type="button"
                     onClick={() => update("profiles", {
                       ...value.profiles,
@@ -242,22 +259,31 @@ export default function OptionalBeaconFields({
           <h3 className="font-medium">Public profile links</h3>
           {value.profiles.links.map((entry, index) => (
             <div key={index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
-              {(["type", "url", "label"] as const).map((field) => (
-                <input
-                  key={field}
-                  aria-label={`Profile link ${field}`}
-                  placeholder={field}
-                  type={field === "url" ? "url" : "text"}
-                  maxLength={field === "url" ? 2048 : field === "type" ? 100 : 160}
-                  value={entry[field] ?? ""}
-                  onChange={(event) => {
-                    const next = [...value.profiles.links];
-                    next[index] = { ...entry, [field]: event.target.value };
-                    update("profiles", { ...value.profiles, links: next });
-                  }}
-                  className="rounded-lg border border-[#dce4dc] p-3"
-                />
-              ))}
+              {(["type", "url", "label"] as const).map((field) => {
+                const guidance = {
+                  type: ["Profile link type", "repository"],
+                  url: ["Public profile URL", "https://github.com/HouseMachine/MOTB-8"],
+                  label: ["Display label (optional)", "MOTB-8 Core Repository"]
+                }[field];
+
+                return (
+                  <label key={field} className="grid gap-2 text-sm font-semibold">
+                    {guidance[0]}
+                    <input
+                      type={field === "url" ? "url" : "text"}
+                      placeholder={`e.g., ${guidance[1]}`}
+                      maxLength={field === "url" ? 2048 : field === "type" ? 100 : 160}
+                      value={entry[field] ?? ""}
+                      onChange={(event) => {
+                        const next = [...value.profiles.links];
+                        next[index] = { ...entry, [field]: event.target.value };
+                        update("profiles", { ...value.profiles, links: next });
+                      }}
+                      className="rounded-lg border border-[#dce4dc] p-3 font-normal"
+                    />
+                  </label>
+                );
+              })}
               <button type="button"
                 onClick={() => update("profiles", {
                   ...value.profiles,
@@ -287,8 +313,10 @@ export default function OptionalBeaconFields({
           <h3 className="font-medium">Native capabilities offered or sought</h3>
           {value.catalogs.native.map((entry, index) => (
             <div key={index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
-              <select
-                aria-label="Catalog direction"
+              <label className="grid gap-2 text-sm font-semibold">
+                Offering or seeking
+                <select
+                  aria-label="Catalog direction"
                 value={entry.direction}
                 onChange={(event) => {
                   const next = [...value.catalogs.native];
@@ -301,23 +329,38 @@ export default function OptionalBeaconFields({
                 className="rounded-lg border border-[#dce4dc] p-3">
                 <option value="OFFER">OFFER</option>
                 <option value="SEEK">SEEK</option>
-              </select>
-              {(["id", "name", "description", "resourceUrl"] as const).map((field) => (
-                <input
-                  key={field}
-                  aria-label={`Native catalog ${field}`}
-                  placeholder={field}
-                  type={field === "resourceUrl" ? "url" : "text"}
-                  maxLength={field === "description" ? 500 : field === "resourceUrl" ? 2048 : 160}
-                  value={entry[field] ?? ""}
-                  onChange={(event) => {
-                    const next = [...value.catalogs.native];
-                    next[index] = { ...entry, [field]: event.target.value };
-                    update("catalogs", { ...value.catalogs, native: next });
-                  }}
-                  className="rounded-lg border border-[#dce4dc] p-3"
-                />
-              ))}
+                </select>
+                <span className="text-xs font-normal text-[#5e6e64]">
+                  OFFER means this machine provides the resource.
+                  SEEK means it is looking for the resource.
+                </span>
+              </label>
+              {(["id", "name", "description", "resourceUrl"] as const).map((field) => {
+                const guidance = {
+                  id: ["Resource ID", "identity-creation-tool"],
+                  name: ["Resource name", "MOTB-8 Identity Creation"],
+                  description: ["Resource description", "Browser-based machine identity generation"],
+                  resourceUrl: ["Resource URL (optional)", "https://motb8.com/create"]
+                }[field];
+
+                return (
+                  <label key={field} className="grid gap-2 text-sm font-semibold">
+                    {guidance[0]}
+                    <input
+                      type={field === "resourceUrl" ? "url" : "text"}
+                      placeholder={`e.g., ${guidance[1]}`}
+                      maxLength={field === "description" ? 500 : field === "resourceUrl" ? 2048 : 160}
+                      value={entry[field] ?? ""}
+                      onChange={(event) => {
+                        const next = [...value.catalogs.native];
+                        next[index] = { ...entry, [field]: event.target.value };
+                        update("catalogs", { ...value.catalogs, native: next });
+                      }}
+                      className="rounded-lg border border-[#dce4dc] p-3 font-normal"
+                    />
+                  </label>
+                );
+              })}
               <button type="button"
                 onClick={() => update("catalogs", {
                   ...value.catalogs,
@@ -342,22 +385,31 @@ export default function OptionalBeaconFields({
           <h3 className="font-medium">External catalogs</h3>
           {value.catalogs.external.map((entry, index) => (
             <div key={index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
-              {(["url", "label", "format"] as const).map((field) => (
-                <input
-                  key={field}
-                  aria-label={`External catalog ${field}`}
-                  placeholder={field}
-                  type={field === "url" ? "url" : "text"}
-                  maxLength={field === "url" ? 2048 : field === "label" ? 160 : 100}
-                  value={entry[field] ?? ""}
-                  onChange={(event) => {
-                    const next = [...value.catalogs.external];
-                    next[index] = { ...entry, [field]: event.target.value };
-                    update("catalogs", { ...value.catalogs, external: next });
-                  }}
-                  className="rounded-lg border border-[#dce4dc] p-3"
-                />
-              ))}
+              {(["url", "label", "format"] as const).map((field) => {
+                const guidance = {
+                  url: ["External catalog URL", "https://example.org/catalog.json"],
+                  label: ["Catalog name (optional)", "Public Service Catalog"],
+                  format: ["Catalog format (optional)", "JSON"]
+                }[field];
+
+                return (
+                  <label key={field} className="grid gap-2 text-sm font-semibold">
+                    {guidance[0]}
+                    <input
+                      type={field === "url" ? "url" : "text"}
+                      placeholder={`e.g., ${guidance[1]}`}
+                      maxLength={field === "url" ? 2048 : field === "label" ? 160 : 100}
+                      value={entry[field] ?? ""}
+                      onChange={(event) => {
+                        const next = [...value.catalogs.external];
+                        next[index] = { ...entry, [field]: event.target.value };
+                        update("catalogs", { ...value.catalogs, external: next });
+                      }}
+                      className="rounded-lg border border-[#dce4dc] p-3 font-normal"
+                    />
+                  </label>
+                );
+              })}
               <button type="button"
                 onClick={() => update("catalogs", {
                   ...value.catalogs,
@@ -385,22 +437,31 @@ export default function OptionalBeaconFields({
         <div className="mt-5 space-y-4">
           {value.protocols.map((entry, index) => (
             <div key={index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
-              {(["id", "version", "documentation"] as const).map((field) => (
-                <input
-                  key={field}
-                  aria-label={`Protocol ${field}`}
-                  placeholder={field}
-                  type={field === "documentation" ? "url" : "text"}
-                  maxLength={field === "documentation" ? 2048 : field === "version" ? 80 : 120}
-                  value={entry[field] ?? ""}
-                  onChange={(event) => {
-                    const next = [...value.protocols];
-                    next[index] = { ...entry, [field]: event.target.value };
-                    update("protocols", next);
-                  }}
-                  className="rounded-lg border border-[#dce4dc] p-3"
-                />
-              ))}
+              {(["id", "version", "documentation"] as const).map((field) => {
+                const guidance = {
+                  id: ["Protocol identifier", "https"],
+                  version: ["Protocol version (optional)", "1.1"],
+                  documentation: ["Documentation URL (optional)", "https://example.org/docs"]
+                }[field];
+
+                return (
+                  <label key={field} className="grid gap-2 text-sm font-semibold">
+                    {guidance[0]}
+                    <input
+                      type={field === "documentation" ? "url" : "text"}
+                      placeholder={`e.g., ${guidance[1]}`}
+                      maxLength={field === "documentation" ? 2048 : field === "version" ? 80 : 120}
+                      value={entry[field] ?? ""}
+                      onChange={(event) => {
+                        const next = [...value.protocols];
+                        next[index] = { ...entry, [field]: event.target.value };
+                        update("protocols", next);
+                      }}
+                      className="rounded-lg border border-[#dce4dc] p-3 font-normal"
+                    />
+                  </label>
+                );
+              })}
               <label className="text-sm font-medium">
                 Endpoints (one URL per line)
               </label>
@@ -440,21 +501,30 @@ export default function OptionalBeaconFields({
         <div className="mt-5 space-y-4">
           {value.relationships.map((entry, index) => (
             <div key={index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
-              {(["type", "target", "label"] as const).map((field) => (
-                <input
-                  key={field}
-                  aria-label={`Relationship ${field}`}
-                  placeholder={field}
-                  maxLength={field === "target" ? 2048 : field === "type" ? 120 : 160}
-                  value={entry[field] ?? ""}
-                  onChange={(event) => {
-                    const next = [...value.relationships];
-                    next[index] = { ...entry, [field]: event.target.value };
-                    update("relationships", next);
-                  }}
-                  className="rounded-lg border border-[#dce4dc] p-3"
-                />
-              ))}
+              {(["type", "target", "label"] as const).map((field) => {
+                const guidance = {
+                  type: ["Relationship type", "associated-with"],
+                  target: ["Related machine or resource", "MOTB-8 Tag or public resource identifier"],
+                  label: ["Display label (optional)", "Associated Machine"]
+                }[field];
+
+                return (
+                  <label key={field} className="grid gap-2 text-sm font-semibold">
+                    {guidance[0]}
+                    <input
+                      placeholder={`e.g., ${guidance[1]}`}
+                      maxLength={field === "target" ? 2048 : field === "type" ? 120 : 160}
+                      value={entry[field] ?? ""}
+                      onChange={(event) => {
+                        const next = [...value.relationships];
+                        next[index] = { ...entry, [field]: event.target.value };
+                        update("relationships", next);
+                      }}
+                      className="rounded-lg border border-[#dce4dc] p-3 font-normal"
+                    />
+                  </label>
+                );
+              })}
               <button type="button"
                 onClick={() => update("relationships", value.relationships.filter((_, i) => i !== index))}
                 className="text-left text-sm text-red-700">
@@ -479,9 +549,11 @@ export default function OptionalBeaconFields({
         <div className="mt-5 space-y-4">
           {value.attachments.map((entry, index) => (
             <div key={attachmentDrafts[index]?.id ?? index} className="grid gap-3 rounded-lg bg-[#f7f8f5] p-4">
-              <input
+              <label className="grid gap-2 text-sm font-semibold">
+                Attachment type identifier
+                <input
                 aria-label="Attachment type"
-                placeholder="Attachment type"
+                placeholder="e.g., custom-metadata"
                 maxLength={200}
                 value={entry.type}
                 onChange={(event) => {
@@ -489,11 +561,14 @@ export default function OptionalBeaconFields({
                   next[index] = { ...entry, type: event.target.value };
                   update("attachments", next);
                 }}
-                className="rounded-lg border border-[#dce4dc] p-3"
-              />
-              <input
+                className="rounded-lg border border-[#dce4dc] p-3 font-normal"
+                />
+              </label>
+              <label className="grid gap-2 text-sm font-semibold">
+                Attachment schema version
+                <input
                 aria-label="Attachment version"
-                placeholder="Attachment version"
+                placeholder="e.g., 1.0"
                 maxLength={40}
                 value={entry.version}
                 onChange={(event) => {
@@ -501,8 +576,9 @@ export default function OptionalBeaconFields({
                   next[index] = { ...entry, version: event.target.value };
                   update("attachments", next);
                 }}
-                className="rounded-lg border border-[#dce4dc] p-3"
-              />
+                className="rounded-lg border border-[#dce4dc] p-3 font-normal"
+                />
+              </label>
               <AttachmentJsonEditor
                 value={entry.data}
                 draftText={attachmentDrafts[index]?.text}
