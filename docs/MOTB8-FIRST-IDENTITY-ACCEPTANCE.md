@@ -1,6 +1,6 @@
 # MOTB-8 - First Identity Acceptance Plan
 
-Status: PLANNED
+Status: IDENTITY GENERATED AND INDEPENDENTLY VERIFIED - PUBLICATION PENDING
 Repository: HouseMachine/MOTB-8-Web
 Related phase: 23A.5
 Core checkpoint: e17c225
@@ -96,17 +96,17 @@ Creating an identity does not automatically make it discoverable.
 
 Complete this section only after successful production creation.
 
-Permanent MOTB-8 Tag: NOT YET GENERATED
+Permanent MOTB-8 Tag: ([[!MOTB-8:1:53XC4K4CXHYJCX6CGMDWY34HJ9KVNGRN:2D]])
 
-Creation Date: PENDING
+Creation Date: 2026-10-29T00:23:56.491Z
 
-Genesis Verification Status: PENDING
+Genesis Verification Status: VALID_UNANCHORED (independent core CLI verification: VALID)
 
 Public Genesis Location: PENDING
 
 Public Beacon Location: PENDING
 
-Control File Backup: PRIVATE - CONFIRMATION PENDING
+Control File Backup: Encrypted Control File saved; independent backup redundancy pending confirmation
 
 ## Completion Gate
 

@@ -79,7 +79,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="identity-card" aria-label="Illustrative MOTB-8 identity">
+          <div className="identity-card" aria-label="Official MOTB-8 Website permanent machine identity">
             <div className="identity-card-top">
               <span>THE MARK</span>
               <span className="identity-status">
@@ -97,9 +97,17 @@ export default function Home() {
             </div>
 
             <div className="identity-card-bottom">
-              <span>PERMANENT TAG</span>
-              <code>[[!MOTB-8:1:••••••••:••••]]</code>
+              <span>OFFICIAL MOTB-8 WEBSITE</span>
+              <code className="block break-all text-xs leading-6">
+                ([[!MOTB-8:1:53XC4K4CXHYJCX6CGMDWY34HJ9KVNGRN:2D]])
+              </code>
               <p>One mark. An evolving Beacon.</p>
+              <a
+                href="/identity"
+                className="mt-3 inline-block text-sm font-semibold text-[#174b3a] hover:underline"
+              >
+                View verified public identity
+              </a>
             </div>
           </div>
         </section>
@@ -169,6 +177,9 @@ export default function Home() {
           <p>Machine Open Tag & Beacon</p>
         </div>
         <div className="footer-links">
+          <a href="/identity">
+            Public Identity
+          </a>
           <a
             href="https://github.com/HouseMachine/MOTB-8"
             target="_blank"

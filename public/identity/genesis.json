@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "motb8Tag": "([[!MOTB-8:1:53XC4K4CXHYJCX6CGMDWY34HJ9KVNGRN:2D]])",
+  "createdAt": "2026-10-29T00:23:56.491Z",
+  "controller": {
+    "id": "#controller-1",
+    "type": "Ed25519",
+    "publicKeyJwk": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "bLcbP211jcCucqmq0Y9nX4jE-Kv7Zj1MgWN9mEgbVR8"
+    }
+  },
+  "proof": {
+    "type": "Ed25519Signature2026",
+    "verificationMethod": "#controller-1",
+    "canonicalization": "RFC8785-JCS",
+    "signature": "E2eBoIP2tcfgofMRTLPjB_JNi3mIwlrnBvYDJ1uozZ-z9qiGYQbskSAA88cIJOdeW8o-gqAgOdNKEluSgua8Dw"
+  }
+}

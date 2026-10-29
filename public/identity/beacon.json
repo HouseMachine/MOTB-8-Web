@@ -1,0 +1,126 @@
+{
+  "name": "Official MOTB-8 Website",
+  "description": "The official MOTB-8 website provides access to the open-source Machine Open Tag & Beacon standard and browser-based tools for creating permanent machine identifiers, generating signed machine-presence records, and managing authorized Beacon updates. It also provides documentation and guidance for independently publishing discoverable machine information.",
+  "presenceScope": "single",
+  "presenceType": "other",
+  "customPresenceType": "Website Service",
+  "taxonomy": [
+    {
+      "domain": "Software & Applications",
+      "category": "Developer Tools",
+      "subcategory": "Machine Development Tools"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "machine-identity-generation",
+      "name": "Machine Identity Generation",
+      "description": "Generates permanent MOTB-8 machine identifiers, locally controlled Ed25519 keys, signed Genesis Records, signed initial Beacons, and encrypted Control Files through a browser-based creation workflow."
+    },
+    {
+      "id": "authorized-beacon-management",
+      "name": "Authorized Beacon Management",
+      "description": "Enables machine operators to import existing MOTB-8 identity records, verify controller authorization, edit supported Beacon information, and generate cryptographically signed revisions while preserving the permanent Tag and Genesis binding."
+    },
+    {
+      "id": "cryptographic-identity-verification",
+      "name": "Cryptographic Identity Verification",
+      "description": "Performs browser-local cryptographic verification of MOTB-8 Genesis Records, signed Beacons, controller relationships, and authorized Beacon revisions during identity creation and management."
+    },
+    {
+      "id": "technical-documentation-guidance",
+      "name": "Technical Documentation and Publishing Guidance",
+      "description": "Provides public documentation covering the MOTB-8 standard, machine identity creation, authorized Beacon management, controller security, independent publication, discoverability, and cryptographic verification limitations."
+    }
+  ],
+  "reachability": [
+    {
+      "type": "website",
+      "value": "https://motb8.com",
+      "label": "Official MOTB-8 Website"
+    }
+  ],
+  "profiles": {
+    "developers": [
+      "HouseMachine"
+    ],
+    "organizations": [
+      "MOTB-8 Project"
+    ],
+    "links": [
+      {
+        "type": "repository",
+        "url": "https://github.com/HouseMachine/MOTB-8",
+        "label": "MOTB-8 Core Repository"
+      },
+      {
+        "type": "repository",
+        "url": "https://github.com/HouseMachine/MOTB-8-Web",
+        "label": "MOTB-8 Website Repository"
+      }
+    ]
+  },
+  "catalogs": {
+    "native": [
+      {
+        "id": "motb8-identity-creation",
+        "direction": "OFFER",
+        "name": "MOTB-8 Identity Creation",
+        "description": "Free browser-based creation of permanent MOTB-8 machine identifiers, signed Genesis and Beacon records, and encrypted locally controlled credentials. No account or central registry required.",
+        "resourceUrl": "https://motb8.com/create"
+      },
+      {
+        "id": "motb8-beacon-management",
+        "direction": "OFFER",
+        "name": "MOTB-8 Beacon Management",
+        "description": "Free browser-based management of existing MOTB-8 machine identities. Operators can locally unlock their encrypted Control File, update supported Beacon information, and generate signed revisions without changing their permanent Tag.",
+        "resourceUrl": "https://motb8.com/manage"
+      }
+    ]
+  },
+  "protocols": [
+    {
+      "id": "https",
+      "documentation": "https://motb8.com/docs",
+      "endpoints": [
+        "https://motb8.com/create",
+        "https://motb8.com/manage",
+        "https://motb8.com/docs"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "implements",
+      "target": "https://github.com/HouseMachine/MOTB-8",
+      "label": "MOTB-8 Core Software"
+    }
+  ],
+  "goodFaith": {
+    "acknowledged": true,
+    "termsVersion": "1.0",
+    "acknowledgedAt": "2026-10-29T00:23:56.491Z"
+  },
+  "schemaVersion": "1.1",
+  "motb8Tag": "([[!MOTB-8:1:53XC4K4CXHYJCX6CGMDWY34HJ9KVNGRN:2D]])",
+  "status": "active",
+  "createdAt": "2026-10-29T00:23:56.491Z",
+  "updatedAt": "2026-10-29T00:23:56.491Z",
+  "revision": 1,
+  "controller": {
+    "id": "#controller-1",
+    "type": "Ed25519",
+    "publicKeyJwk": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "bLcbP211jcCucqmq0Y9nX4jE-Kv7Zj1MgWN9mEgbVR8"
+    }
+  },
+  "discoverySummary": "Official MOTB-8 Website | single other | The official MOTB-8 website provides access to the open-source Machine Open Tag & Beacon standard and browser-based tools for creating permanent machine identifiers, generating signed machine-presence records, and managing authorized Beacon updates. It also provides documentation and guidance for independently publishing discoverable machine information.",
+  "proof": {
+    "type": "Ed25519Signature2026",
+    "verificationMethod": "#controller-1",
+    "canonicalization": "RFC8785-JCS",
+    "signature": "m2liUoAwaPMEgfJTRkl1WadAcH2-9DFI_Fd3VeY3_idkDB3KlPzbIe_MMChQz89alddZngTv8u0Z0ejI6XAxDw"
+  }
+}
