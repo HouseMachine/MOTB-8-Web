@@ -96,16 +96,16 @@ export default function IdentityDetails({
         <h2 className="text-2xl font-bold">
           Why is this identity public?
         </h2>
-        <p className="mt-4 leading-8 text-[#40584b]">
+        <p className="mt-4 text-[15px] leading-7 text-[#40584b]">
           MOTB-8 is designed to make machines discoverable,
           identifiable, and independently verifiable.
         </p>
-        <p className="mt-4 leading-8 text-[#40584b]">
+        <p className="mt-4 text-[15px] leading-7 text-[#40584b]">
           Publishing this website&apos;s permanent Tag, signed Genesis
           Record, and signed Beacon allows people, developers,
           and compatible machine systems to:
         </p>
-        <ul className="mt-5 list-disc space-y-3 pl-6 text-[#40584b]">
+        <ul className="mt-5 list-disc space-y-3 pl-6 text-[15px] leading-7 text-[#40584b]">
           <li>
             <strong>Identify</strong> this website through its
             permanent machine-presence identifier.
@@ -124,7 +124,7 @@ export default function IdentityDetails({
             permanent Tag remains unchanged.
           </li>
         </ul>
-        <p className="mt-5 leading-8 text-[#40584b]">
+        <p className="mt-5 text-[15px] leading-7 text-[#40584b]">
           These public records demonstrate how MOTB-8 works
           without requiring a central registry, user account,
           or proprietary discovery service.
