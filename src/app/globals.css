@@ -134,7 +134,7 @@ a { text-decoration: none; }
 .button-secondary:hover { background: #edf3ed; }
 .hero {
   max-width: 1240px;
-  min-height: 660px;
+  min-height: 0;
   margin: 0 auto;
   padding: 45px 36px 65px;
   display: grid;
