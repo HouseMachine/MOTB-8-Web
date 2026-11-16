@@ -13,9 +13,9 @@ const components = [
       "Form the nested inner envelope, contributing to the distinctive opening and closing patterns.",
   },
   {
-    symbol: "Exclamation mark !",
+    symbol: "Bang / Exclamation Mark (!)",
     purpose:
-      "Introduces the !MOTB-8 protocol sentinel, providing a recognizable marker for compatible scanners and parsers.",
+      "Known in computing as a bang, the exclamation mark serves as the prefix to the !MOTB-8 protocol sentinel. It contributes to the distinctive recognition pattern that compatible crawlers and parsers can identify.",
   },
   {
     symbol: "MOTB-8",
