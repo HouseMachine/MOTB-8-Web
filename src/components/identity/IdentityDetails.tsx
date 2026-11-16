@@ -41,7 +41,7 @@ export default function IdentityDetails({
             <a
               key={record.href}
               href={record.href}
-              className="rounded-xl border border-[#dce4dc] bg-white p-5 transition-colors hover:border-[#174b3a] hover:bg-[#eaf1e9]"
+              className="flex flex-col rounded-xl border border-[#dce4dc] bg-white p-5 transition-colors hover:border-[#174b3a] hover:bg-[#eaf1e9]"
             >
               <h3 className="font-semibold text-[#174b3a]">
                 {record.title}
@@ -49,7 +49,7 @@ export default function IdentityDetails({
               <p className="mt-2 text-sm leading-6 text-[#5e6e64]">
                 {record.description}
               </p>
-              <span className="mt-4 inline-block text-sm font-semibold">
+              <span className="mt-auto inline-block pt-4 text-sm font-semibold">
                 View public record
               </span>
             </a>
