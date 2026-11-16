@@ -1,3 +1,4 @@
+import Brand from "@/components/Brand";
 import Link from "next/link";
 import ManageIdentityImport from "@/components/manage/ManageIdentityImport";
 
@@ -33,9 +34,7 @@ export default function ManagePage() {
     <main className="min-h-screen bg-[#f7f8f5] text-[#172a22]">
       <div className="mx-auto max-w-5xl px-6 py-8">
         <header className="flex flex-wrap items-center justify-between gap-4 border-b border-[#dce4dc] pb-6">
-          <Link href="/" className="text-xl font-bold">
-            MOTB-8
-          </Link>
+          <Brand />
           <nav className="flex gap-6 text-sm">
             <Link href="/">Home</Link>
             <Link href="/create">Create</Link>

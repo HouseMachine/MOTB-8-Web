@@ -1,3 +1,4 @@
+import Brand from "@/components/Brand";
 import Link from "next/link";
 
 const steps = [
@@ -25,13 +26,7 @@ export default function Home() {
   return (
     <div className="site-shell">
       <header className="site-header">
-        <Link href="/" className="brand" aria-label="MOTB-8 home">
-          <span className="brand-symbol" aria-hidden="true">
-            <span className="brand-core" />
-            <span className="brand-signal" />
-          </span>
-          <span>MOTB-8</span>
-        </Link>
+        <Brand />
 
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#about">About</a>
