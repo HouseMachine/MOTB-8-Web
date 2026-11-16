@@ -15,7 +15,7 @@ export default function CreatePage() {
   return (
     <main className="min-h-screen bg-[#f7f8f5] text-[#172a22]">
       <div className="mx-auto max-w-5xl px-6 py-8">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b border-[#dce4dc] pb-6">
+        <header className="interior-site-header flex flex-wrap items-center justify-between gap-4 border-b border-[#dce4dc] pb-6">
           <Brand />
           <nav className="flex gap-6 text-sm">
             <Link href="/">Home</Link>

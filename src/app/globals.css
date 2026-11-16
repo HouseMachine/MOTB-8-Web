@@ -37,6 +37,19 @@ a { text-decoration: none; }
   gap: 24px;
 }
 
+.interior-site-header {
+  width: min(calc(100vw - 72px), 1168px);
+  max-width: none;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 600px) {
+  .interior-site-header {
+    width: calc(100vw - 40px);
+  }
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
