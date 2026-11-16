@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
   --background: #f7f8f5;
@@ -257,6 +257,27 @@ a { text-decoration: none; }
   color: var(--green);
   font-size: 15px;
   font-weight: 700;
+}
+
+.homepage-permanent-tag {
+  display: block;
+  color: var(--green);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.homepage-permanent-tag span {
+  display: block;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .homepage-permanent-tag {
+    font-size: clamp(11px, 3.3vw, 16px);
+  }
 }
 
 .identity-card-bottom p {

@@ -98,8 +98,9 @@ export default function Home() {
 
             <div className="identity-card-bottom">
               <span>OFFICIAL MOTB-8 WEBSITE</span>
-              <code className="block break-all text-xs leading-6">
-                ([[!MOTB-8:1:53XC4K4CXHYJCX6CGMDWY34HJ9KVNGRN:2D]])
+              <code className="homepage-permanent-tag">
+                <span>([[!MOTB-8:1:53XC4K4CXHYJC</span>
+                <span>X6CGMDWY34HJ9KVNGRN:2D]])</span>
               </code>
               <p>One mark. An evolving Beacon.</p>
               <a
