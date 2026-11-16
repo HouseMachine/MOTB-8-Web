@@ -40,13 +40,13 @@ export default function OperatorGuide() {
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {workflows.map((item) => (
           <article key={item.title}
-            className="rounded-xl border border-[#dce4dc] bg-white p-6">
+            className="flex flex-col rounded-xl border border-[#dce4dc] bg-white p-6">
             <h3 className="text-lg font-semibold">{item.title}</h3>
             <p className="mt-3 text-sm leading-7 text-[#5e6e64]">
               {item.text}
             </p>
             <Link href={item.href}
-              className="mt-5 inline-block text-sm font-semibold text-[#174b3a] hover:underline">
+              className="mt-auto inline-block pt-5 text-sm font-semibold text-[#174b3a] hover:underline">
               {item.action}
             </Link>
           </article>
