@@ -1,5 +1,6 @@
 import Link from "next/link";
 import OperatorGuide from "@/components/docs/OperatorGuide";
+import TagAnatomy from "@/components/docs/TagAnatomy";
 
 const concepts = [
   {
@@ -68,6 +69,8 @@ export default function DocsPage() {
             </article>
           ))}
         </section>
+
+        <TagAnatomy />
 
         <OperatorGuide />
 

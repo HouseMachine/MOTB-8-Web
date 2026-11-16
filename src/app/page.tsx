@@ -109,6 +109,12 @@ export default function Home() {
               >
                 View verified public identity
               </a>
+              <a
+                href="/docs#anatomy-of-the-mark"
+                className="mt-2 block text-sm font-semibold text-[#174b3a] hover:underline"
+              >
+                How to read the Mark
+              </a>
             </div>
           </div>
         </section>
